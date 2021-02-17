@@ -11,8 +11,11 @@ public class Factura {
 	
 	@Value("${factura.descripcion}")
 	private String descripcion;
+	
 	@Autowired
 	private Cliente cliente;
+	
+	@Autowired
 	private List<ItemFactura> items;
 	
 	public String getDescripcion() {
