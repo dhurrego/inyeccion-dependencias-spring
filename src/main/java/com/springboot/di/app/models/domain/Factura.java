@@ -1,5 +1,6 @@
 package com.springboot.di.app.models.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,10 +9,16 @@ import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
-public class Factura {
+@RequestScope
+//@SessionScope // Se cambia el contexto para una SESSION
+//@ApplicationScope
+public class Factura implements Serializable{
 	
+	private static final long serialVersionUID = 9047134564843636388L;
+
 	@Value("${factura.descripcion}")
 	private String descripcion;
 	
@@ -27,7 +34,7 @@ public class Factura {
 		descripcion = descripcion.concat(" del cliente ").concat( cliente.getNombre() );
 	}
 	
-	@PreDestroy
+	@PreDestroy // Se ejecuta justo antes de destruirse el componente, en este caso, cuando se detiene el servicio tomcat, debido a que por defecto esto es una clase Singleton
 	public void destruir() {
 		System.out.println("Factura destruida: ".concat(descripcion));
 	}
